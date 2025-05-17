@@ -1,6 +1,6 @@
 return {
   "steven-dyson/todo-finder.nvim",
-  dir = "~/Code/todo-finder.nvim",
+  -- dir = "~/Code/todo-finder.nvim",
   branch = "main",
   -- tag = "0.3.0",
   cmd = "ListTodos",
