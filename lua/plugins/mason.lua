@@ -5,6 +5,8 @@ return {
       "stylua",
       "prettier",
       "prettierd",
+      "markdown-toc",
+      "markdownlint-cli2",
     },
   },
 }
