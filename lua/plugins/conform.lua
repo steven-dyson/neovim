@@ -48,6 +48,7 @@ return {
         go = { "gofumpt" },
         sh = { "shfmt" },
         bash = { "shfmt" },
+        sql = { "sqruff" },
       },
     }),
   },
