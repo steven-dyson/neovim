@@ -78,7 +78,7 @@ handle_install "$PKG" docker "" "./scripts/install_docker.sh" ""
 # NVM
 export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
-handle_install "{$PKG}" nvm "" "curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.0/install.sh | bash" ""
+handle_install "$PKG" nvm "" "curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.0/install.sh | bash" ""
 
 # PNPM
 handle_install "$PKG" pnpm "" "curl -fsSL https://get.pnpm.io/install.sh | sh -" ""
