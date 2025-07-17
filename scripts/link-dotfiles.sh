@@ -7,11 +7,20 @@ link() {
 	local src=$1
 	local dest=$2
 
+	if [ -L "$dest" ] && [ "$(readlink "$dest")" == "$src" ]; then
+		echo "✅ $dest already correctly linked"
+		return
+	fi
+
 	if [ -e "$dest" ] || [ -L "$dest" ]; then
-		read -rp "❗ $dest already exists. Overwrite with $src? [y/N] " confirm
-		if [[ "$confirm" != [yY] ]]; then
-			echo "⏭️  Skipping $dest"
-			return
+		if [[ "$FORCE" != true ]]; then
+			read -rp "❗ $dest exists. Overwrite with $src? [y/N] " confirm
+			if [[ "$confirm" != [yY] ]]; then
+				echo "⏭️ Skipping $dest"
+				return
+			fi
+		else
+			echo "⚠️ Forcing overwrite of $dest"
 		fi
 	fi
 
