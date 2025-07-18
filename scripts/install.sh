@@ -61,7 +61,7 @@ handle_install "$PKG" git git-all "" ""
 
 # Go
 GO_TARGET=1.24.5
-handle_install "$PKG" go "" "./scripts/install_go.sh $GO_TARGET" "$HOME/go/bin"
+handle_install "$PKG" go "" "./scripts/install_go.sh $GO_TARGET" '/usr/local/go/bin:$HOME/go/bin'
 
 # Air (Go Hot Reload)
 handle_install "$PKG" air "" "go install github.com/air-verse/air@latest" ""
