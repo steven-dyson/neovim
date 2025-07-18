@@ -64,7 +64,7 @@ GO_TARGET=1.24.5
 handle_install "$PKG" go "" "./scripts/install_go.sh $GO_TARGET" "$HOME/go/bin"
 
 # Air (Go Hot Reload)
-handle_install "$PKG" air "" "go install github.com/cosmtrek/air@latest" ""
+handle_install "$PKG" air "" "go install github.com/air-verse/air@latest" ""
 
 # Python
 handle_install "$PKG" python3 python3 "" ""
