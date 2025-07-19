@@ -9,9 +9,8 @@ if ! command -v docker &>/dev/null; then
 	sudo apt-get install docker-compose-plugin
 
 	# Groups
-	sudo groupadd docker
+	getent group docker >/dev/null || sudo groupadd docker
 	sudo usermod -aG docker "$USER"
-	newgrp docker
 else
 	echo "Docker is already installed."
 fi
