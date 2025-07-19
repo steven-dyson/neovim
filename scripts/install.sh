@@ -17,6 +17,7 @@ ensure_path() {
 		if ! grep -q "export PATH=\"$1:\$PATH\"" ~/.bashrc; then
 			echo "🔧 Adding $1 to PATH in .bashrc"
 			echo "export PATH=\"$1:\$PATH\"" >>~/.bashrc
+			source "$HOME"/.bashrc
 		else
 			echo "⚠️  $1 already referenced in .bashrc"
 		fi
@@ -56,6 +57,9 @@ echo "🛠 Installing language runtimes and tools..."
 
 PKG=$(get_pkg_mgr)
 
+# Update and Upgrade
+sudo apt update && sudo apt full-upgrade -y
+
 #Git
 handle_install "$PKG" git git-all "" ""
 
@@ -71,6 +75,7 @@ handle_install "$PKG" python3 python3 "" ""
 
 # UV (Python Package Manager)
 handle_install "$PKG" uv "" "curl -Ls https://astral.sh/uv/install.sh | bash" ""
+source $HOME/.bashrc
 
 # Docker
 handle_install "$PKG" docker "" "./scripts/install_docker.sh" ""
