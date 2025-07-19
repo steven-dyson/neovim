@@ -10,7 +10,8 @@ if ! command -v docker &>/dev/null; then
 
 	# Groups
 	getent group docker >/dev/null || sudo groupadd docker
-	sudo usermod -aG docker "$USER"
+	CURRENT_USER=$(whoami)
+	sudo usermod -aG docker "$CURRENT_USER"
 else
 	echo "Docker is already installed."
 fi
