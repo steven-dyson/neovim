@@ -79,7 +79,18 @@ handle_install "Python" install_python python3
 # UV (Python Package Manager)
 install_uv() {
 	curl -Ls https://astral.sh/uv/install.sh | bash
-	# source "$HOME/.bashrc"
+
+	# Always ensure correct path is in PATH
+	ensure_path "$HOME/.local/bin"
+
+	local uv_env="$HOME/.local/bin/env"
+	if [[ -f "$uv_env" ]]; then
+		echo "🔁 Sourcing uv env config from $uv_env"
+		# shellcheck source=/root/.local/bin/env
+		source "$uv_env"
+	else
+		echo "⚠️  uv env file not found at $uv_env"
+	fi
 }
 handle_install "uv" install_uv uv
 
