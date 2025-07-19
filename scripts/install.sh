@@ -31,62 +31,72 @@ ensure_path() {
 # arg2: command to check (e.g., go)
 # arg3: package name to install (e.g., golang), empty string if not used
 handle_install() {
-	if ! command -v "$2" &>/dev/null; then
-		read -rp "Do you want to install $2? (y/N) " answer
-		if [[ "${answer,,}" == "y" ]]; then
-			echo "🟢 Installing $2..."
-			if [[ -n "$4" ]]; then
-				eval "$4"
-			else
-				$1 install -y "$3"
-			fi
+	local name=$1
+	local fnc=$2
+	local cmd=$3
 
-			if [[ -n "$5" ]]; then
-				ensure_path "$5"
-			fi
+	if ! command -v "$cmd" &>/dev/null; then
+		read -rp "Do you want to install $name? (y/N) " answer
+		if [[ "${answer,,}" == "y" ]]; then
+			echo "🟢 Installing $name..."
+			"$fnc"
 		else
-			echo "❌ Skipping installation of $2"
+			echo "❌ Skipping installation of $name"
 		fi
 	else
-		echo "📦 $2 is already installed"
+		echo "📦 $name is already installed"
 	fi
 }
 
 set -euo pipefail
 echo "🛠 Installing language runtimes and tools..."
 
-PKG=$(get_pkg_mgr)
+PKG_MGR=$(get_pkg_mgr)
 
 # Update and Upgrade
 sudo apt update && sudo apt full-upgrade -y
 
-#Git
-handle_install "$PKG" git git-all "" ""
-
 # Go
-GO_TARGET=1.24.5
-handle_install "$PKG" go "" "./scripts/install_go.sh $GO_TARGET" '/usr/local/go/bin:$HOME/go/bin'
+install_go() {
+	GO_TARGET=1.24.5
+	./scripts/install_go.sh $GO_TARGET
+	ensure_path "/usr/local/go/bin"
+	ensure_path '$HOME/go/bin'
+}
+handle_install "Go" install_go go
 
 # Air (Go Hot Reload)
-handle_install "$PKG" air "" "go install github.com/air-verse/air@latest" ""
+install_air() {
+	go install github.com/air-verse/air@latest
+}
+handle_install "Air" install_air air
 
 # Python
-handle_install "$PKG" python3 python3 "" ""
+install_python() {
+	"$PKG_MGR" install python3
+}
+handle_install "Python" install_python python3
 
 # UV (Python Package Manager)
-handle_install "$PKG" uv "" "curl -Ls https://astral.sh/uv/install.sh | bash" ""
-source $HOME/.bashrc
+install_uv() {
+	curl -Ls https://astral.sh/uv/install.sh | bash
+	source "$HOME/.bashrc"
+}
+handle_install "uv" install_uv uv
 
 # Docker
-handle_install "$PKG" docker "" "./scripts/install_docker.sh" ""
+install_docker() {
+	./scripts/install_docker.sh
+}
+handle_install "Docker" install_docker docker
 
 # NVM
-export NVM_DIR="$HOME/.nvm"
-[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
-handle_install "$PKG" nvm "" "curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.0/install.sh | bash" ""
+# export NVM_DIR="$HOME/.nvm"
+# [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+#handle_install "$PKG" nvm "" "curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.0/install.sh | bash" ""
 
 # PNPM
-handle_install "$PKG" pnpm "" "curl -fsSL https://get.pnpm.io/install.sh | sh -" ""
+#handle_install "$PKG" pnpm "" "curl -fsSL https://get.pnpm.io/install.sh | sh -" ""
 
 # TODO: Remaining to setup
 # NVIM
