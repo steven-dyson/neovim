@@ -17,7 +17,6 @@ ensure_path() {
 		if ! grep -q "export PATH=\"$1:\$PATH\"" ~/.bashrc; then
 			echo "🔧 Adding $1 to PATH in .bashrc"
 			echo "export PATH=\"$1:\$PATH\"" >>~/.bashrc
-			source "$HOME"/.bashrc
 		else
 			echo "⚠️  $1 already referenced in .bashrc"
 		fi
@@ -80,7 +79,7 @@ handle_install "Python" install_python python3
 # UV (Python Package Manager)
 install_uv() {
 	curl -Ls https://astral.sh/uv/install.sh | bash
-	source "$HOME/.bashrc"
+	# source "$HOME/.bashrc"
 }
 handle_install "uv" install_uv uv
 
