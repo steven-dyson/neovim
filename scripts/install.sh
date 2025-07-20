@@ -103,6 +103,17 @@ handle_install "Docker" install_docker docker
 # NVM
 install_nvm() {
 	curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.3/install.sh | bash
+
+	if [ -z "${XDG_CONFIG_HOME-}" ]; then
+		export NVM_DIR="${HOME}/.nvm"
+	else
+		export NVM_DIR="${XDG_CONFIG_HOME}/nvm"
+	fi
+
+	if [ -s "$NVM_DIR/nvm.sh" ]; then
+		. "$NVM_DIR/nvm.sh"
+	fi
+
 	nvm install 20
 	nvm alias default 20
 }
