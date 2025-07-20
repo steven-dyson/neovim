@@ -1,6 +1,7 @@
 FROM ubuntu:24.04
 
 ENV container=docker
+ENV SHELL=/bin/bash
 
 # Install base packages
 RUN apt-get update && \
