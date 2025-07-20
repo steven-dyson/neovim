@@ -36,8 +36,8 @@ set_alias() {
 		touch "$target"
 	fi
 
-	if ! grep -q "alias $from=" "$target"; then
-		echo "alias $from=\"$to\"" >>"$target"
+	if ! grep -q "alias $to=" "$target"; then
+		echo "alias $to=\"$from\"" >>"$target"
 	fi
 }
 
