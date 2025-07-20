@@ -26,6 +26,21 @@ ensure_path() {
 	fi
 }
 
+set_alias() {
+	local from=$1
+	local to=$2
+
+	target="$HOME/.bash_aliases"
+
+	if ! test -f "$target"; then
+		touch "$target"
+	fi
+
+	if ! grep -q "alias $from=" "$target"; then
+		echo "alias $from=$to" >>"$target"
+	fi
+}
+
 # arg1: package manager (e.g., apt)
 # arg2: command to check (e.g., go)
 # arg3: package name to install (e.g., golang), empty string if not used
@@ -73,6 +88,8 @@ handle_install "Air" install_air air
 # Python
 install_python() {
 	"$PKG_MGR" install python3
+	set_alias "python3" "python"
+	set_alias "python3" "py"
 }
 handle_install "Python" install_python python3
 
