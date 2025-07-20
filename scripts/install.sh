@@ -112,10 +112,10 @@ install_uv() {
 	curl -Ls https://astral.sh/uv/install.sh | bash > >(write_to_log) 2>&1
 
 	# Always ensure correct path is in PATH
-	set_path "$HOME/.local/bin"
+	set_path '$HOME/.local/bin'
 
 	local uv_env="$HOME/.local/bin/env"
-	if [[ -f "$uv_env" ]]; then
+	if test -f "$uv_env"; then
 		echo "🔁 Sourcing uv env config from $uv_env"
 		# shellcheck source=/root/.local/bin/env
 		source "$uv_env"
@@ -157,11 +157,17 @@ install_pnpm() {
 }
 handle_install "PNPM" install_pnpm pnpm
 
-# TODO: Remaining to setup
-# NVIM
-# Lazygit
-# grep / fzf
-# Lua / hererocks / luarocks
-# Postgres
+# Neovim
+install_neovim() {
+	curl -LO https://github.com/neovim/neovim/releases/latest/download/nvim-linux-x86_64.tar.gz
+	sudo rm -rf /opt/nvim
+	sudo tar -C /opt -xzf nvim-linux-x86_64.tar.gz
+	set_path "/opt/nvim-linux-x86_64/bin"
+}
+
+# TODO: Lazygit
+# TODO: grep / fzf
+# TODO: Lua / hererocks / luarocks
+# TODO: Postgres
 
 echo "✅ Language runtimes and tools installed."
