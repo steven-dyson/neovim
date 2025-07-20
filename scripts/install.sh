@@ -164,6 +164,7 @@ install_neovim() {
 	sudo tar -C /opt -xzf nvim-linux-x86_64.tar.gz
 	set_path "/opt/nvim-linux-x86_64/bin"
 }
+handle_install "Neovim" install_neovim nvim
 
 # TODO: Lazygit
 # TODO: grep / fzf
