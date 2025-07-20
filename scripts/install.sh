@@ -139,6 +139,7 @@ handle_install "NVM" install_nvm nvm
 # PNPM
 install_pnpm() {
 	curl -fsSL https://get.pnpm.io/install.sh | sh -
+	set_alias "pnpm" "pn"
 }
 handle_install "PNPM" install_pnpm pnpm
 
