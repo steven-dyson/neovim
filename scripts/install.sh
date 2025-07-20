@@ -27,8 +27,8 @@ ensure_path() {
 }
 
 set_alias() {
-	local from=$1
-	local to=$2
+	local to=$1
+	local from=$2
 
 	target="$HOME/.bash_aliases"
 
@@ -37,7 +37,7 @@ set_alias() {
 	fi
 
 	if ! grep -q "alias $from=" "$target"; then
-		echo "alias $from=$to" >>"$target"
+		echo "alias $from=\"$to\"" >>"$target"
 	fi
 }
 
@@ -88,8 +88,8 @@ handle_install "Air" install_air air
 # Python
 install_python() {
 	"$PKG_MGR" install python3
-	set_alias "python3" "python"
-	set_alias "python3" "py"
+	set_alias "python" "python3"
+	set_alias "py" "python3"
 }
 handle_install "Python" install_python python3
 
@@ -139,7 +139,7 @@ handle_install "NVM" install_nvm nvm
 # PNPM
 install_pnpm() {
 	curl -fsSL https://get.pnpm.io/install.sh | sh -
-	set_alias "pnpm" "pn"
+	set_alias "pn" "pnpm"
 }
 handle_install "PNPM" install_pnpm pnpm
 
