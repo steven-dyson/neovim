@@ -127,13 +127,13 @@ handle_install "uv" install_uv uv
 
 # Docker
 install_docker() {
-	./scripts/install_docker.sh | write_to_log
+	./scripts/install_docker.sh > >(write_to_log) 2>&1
 }
 handle_install "Docker" install_docker docker
 
 # NVM
 install_nvm() {
-	curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.3/install.sh | bash > >(write_to_log) 2>&1
+	{ curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.3/install.sh | bash; } > >(write_to_log) 2>&1
 
 	if [ -z "${XDG_CONFIG_HOME-}" ]; then
 		export NVM_DIR="${HOME}/.nvm"
