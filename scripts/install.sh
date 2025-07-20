@@ -41,6 +41,15 @@ set_alias() {
 	fi
 }
 
+write_to_log() {
+	local logfile="./.logs/install.log"
+	mkdir -p "$(dirname "$logfile")"
+
+	while IFS= read -r line; do
+		echo "$line" >>"$logfile"
+	done
+}
+
 # arg1: package manager (e.g., apt)
 # arg2: command to check (e.g., go)
 # arg3: package name to install (e.g., golang), empty string if not used
@@ -118,7 +127,7 @@ handle_install "uv" install_uv uv
 
 # Docker
 install_docker() {
-	./scripts/install_docker.sh
+	./scripts/install_docker.sh | write_to_log
 }
 handle_install "Docker" install_docker docker
 
