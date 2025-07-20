@@ -12,7 +12,7 @@ get_pkg_mgr() {
 }
 
 # arg1: directory to add to PATH
-ensure_path() {
+set_path() {
 	if [[ ":$PATH:" != *":$1:"* ]]; then
 		if ! grep -q "export PATH=\"$1:\$PATH\"" ~/.bashrc; then
 			echo "🔧 Adding $1 to PATH in .bashrc"
@@ -67,6 +67,11 @@ echo "🛠 Installing language runtimes and tools..."
 
 PKG_MGR=$(get_pkg_mgr)
 
+# Logging
+LOG_DIR="./.logs"
+mkdir -p "$LOG_DIR"
+LOG_FILE="$LOG_DIR/install.log"
+
 # Update and Upgrade
 sudo apt update && sudo apt full-upgrade -y
 
@@ -74,8 +79,8 @@ sudo apt update && sudo apt full-upgrade -y
 install_go() {
 	GO_TARGET=1.24.5
 	./scripts/install_go.sh $GO_TARGET
-	ensure_path "/usr/local/go/bin"
-	ensure_path '$HOME/go/bin'
+	set_path "/usr/local/go/bin"
+	set_path '$HOME/go/bin'
 }
 handle_install "Go" install_go go
 
@@ -95,10 +100,10 @@ handle_install "Python" install_python python3
 
 # UV (Python Package Manager)
 install_uv() {
-	curl -Ls https://astral.sh/uv/install.sh | bash
+	curl -Ls https://astral.sh/uv/install.sh | bash >>"$LOG_FILE" 2>&1
 
 	# Always ensure correct path is in PATH
-	ensure_path "$HOME/.local/bin"
+	set_path "$HOME/.local/bin"
 
 	local uv_env="$HOME/.local/bin/env"
 	if [[ -f "$uv_env" ]]; then
@@ -106,7 +111,7 @@ install_uv() {
 		# shellcheck source=/root/.local/bin/env
 		source "$uv_env"
 	else
-		echo "⚠️  uv env file not found at $uv_env"
+		echo "⚠️ uv env file not found at $uv_env"
 	fi
 }
 handle_install "uv" install_uv uv
