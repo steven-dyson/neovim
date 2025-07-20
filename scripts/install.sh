@@ -127,7 +127,7 @@ handle_install "uv" install_uv uv
 
 # Docker
 install_docker() {
-	./scripts/install_docker.sh 2>&1 | tee -a .logs/install.log >/dev/null
+	./scripts/install_docker.sh | write_to_log
 }
 handle_install "Docker" install_docker docker
 
@@ -148,7 +148,7 @@ install_nvm() {
 	nvm install 20
 	nvm alias default 20
 }
-handle_install "NVM" install_nvm nvm
+handle_install "NVM" install_nvm nvm > >(write_to_log) 2>&1
 
 # PNPM
 install_pnpm() {
