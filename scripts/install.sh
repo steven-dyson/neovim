@@ -35,7 +35,7 @@ handle_install() {
 	local cmd=$3
 
 	if ! command -v "$cmd" &>/dev/null; then
-		read -rp "Do you want to install $name? (y/N) " answer
+		read -rp "🤔 Do you want to install $name? (y/N) " answer
 		if [[ "${answer,,}" == "y" ]]; then
 			echo "🟢 Installing $name..."
 			"$fnc"
@@ -101,12 +101,18 @@ install_docker() {
 handle_install "Docker" install_docker docker
 
 # NVM
-# export NVM_DIR="$HOME/.nvm"
-# [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
-#handle_install "$PKG" nvm "" "curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.0/install.sh | bash" ""
+install_nvm() {
+	curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.3/install.sh | bash
+	nvm install 20
+	nvm alias default 20
+}
+handle_install "NVM" install_nvm nvm
 
 # PNPM
-#handle_install "$PKG" pnpm "" "curl -fsSL https://get.pnpm.io/install.sh | sh -" ""
+install_pnpm() {
+	curl -fsSL https://get.pnpm.io/install.sh | sh -
+}
+handle_install "PNPM" install_pnpm pnpm
 
 # TODO: Remaining to setup
 # NVIM
