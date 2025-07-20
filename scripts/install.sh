@@ -127,7 +127,7 @@ handle_install "uv" install_uv uv
 
 # Docker
 install_docker() {
-	./scripts/install_docker.sh | write_to_log
+	./scripts/install_docker.sh > >(write_to_log) 2>&1
 }
 handle_install "Docker" install_docker docker
 
