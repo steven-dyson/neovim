@@ -87,7 +87,7 @@ sudo apt update && sudo apt full-upgrade -y
 # Go
 install_go() {
 	GO_TARGET=1.24.5
-	./scripts/install_go.sh $GO_TARGET
+	./scripts/install_go.sh $GO_TARGET > >(write_to_log) 2>&1
 	set_path "/usr/local/go/bin"
 	set_path '$HOME/go/bin'
 }
@@ -95,7 +95,7 @@ handle_install "Go" install_go go
 
 # Air (Go Hot Reload)
 install_air() {
-	go install github.com/air-verse/air@latest
+	go install github.com/air-verse/air@latest > >(write_to_log) 2>&1
 }
 handle_install "Air" install_air air
 
@@ -109,7 +109,7 @@ handle_install "Python" install_python python3
 
 # UV (Python Package Manager)
 install_uv() {
-	curl -Ls https://astral.sh/uv/install.sh | bash >>"$LOG_FILE" 2>&1
+	curl -Ls https://astral.sh/uv/install.sh | bash > >(write_to_log) 2>&1
 
 	# Always ensure correct path is in PATH
 	set_path "$HOME/.local/bin"
@@ -133,7 +133,7 @@ handle_install "Docker" install_docker docker
 
 # NVM
 install_nvm() {
-	curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.3/install.sh | bash
+	curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.3/install.sh | bash > >(write_to_log) 2>&1
 
 	if [ -z "${XDG_CONFIG_HOME-}" ]; then
 		export NVM_DIR="${HOME}/.nvm"
@@ -145,14 +145,14 @@ install_nvm() {
 		. "$NVM_DIR/nvm.sh"
 	fi
 
-	nvm install 20
-	nvm alias default 20
+	nvm install 20 > >(write_to_log) 2>&1
+	nvm alias default 20 > >(write_to_log) 2>&1
 }
-handle_install "NVM" install_nvm nvm > >(write_to_log) 2>&1
+handle_install "NVM" install_nvm nvm
 
 # PNPM
 install_pnpm() {
-	curl -fsSL https://get.pnpm.io/install.sh | sh -
+	curl -fsSL https://get.pnpm.io/install.sh | sh - > >(write_to_log) 2>&1
 	set_alias "pn" "pnpm"
 }
 handle_install "PNPM" install_pnpm pnpm
