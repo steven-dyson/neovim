@@ -174,7 +174,7 @@ install_tmux() {
 handle_install "tmux" install_tmux tmux
 
 install_ghostty() {
-	curl -fsSL https://raw.githubusercontent.com/mkasberg/ghostty-ubuntu/HEAD/install.sh > >(write_to_log) 2>&1
+	curl -fsSL https://raw.githubusercontent.com/mkasberg/ghostty-ubuntu/HEAD/install.sh | bash > >(write_to_log) 2>&1
 }
 handle_install "Ghostty" install_ghostty ghostty
 
