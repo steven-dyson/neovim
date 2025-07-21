@@ -159,7 +159,7 @@ handle_install "PNPM" install_pnpm pnpm
 
 # Neovim
 install_neovim() {
-	curl -LO https://github.com/neovim/neovim/releases/latest/download/nvim-linux-x86_64.tar.gz
+	curl -LO https://github.com/neovim/neovim/releases/latest/download/nvim-linux-x86_64.tar.gz > >(write_to_log) 2>&1
 	sudo rm -rf /opt/nvim
 	sudo tar -C /opt -xzf nvim-linux-x86_64.tar.gz
 	set_path "/opt/nvim-linux-x86_64/bin"
@@ -168,9 +168,15 @@ handle_install "Neovim" install_neovim nvim
 
 install_tmux() {
 	$PKG_MGR install tmux
-	git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
+	git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm > >(write_to_log) 2>&1
+
 }
 handle_install "tmux" install_tmux tmux
+
+install_ghostty() {
+	curl -fsSL https://raw.githubusercontent.com/mkasberg/ghostty-ubuntu/HEAD/install.sh > >(write_to_log) 2>&1
+}
+handle_install "Ghostty" install_ghostty ghostty
 
 # TODO: Lazygit
 # TODO: grep / fzf
