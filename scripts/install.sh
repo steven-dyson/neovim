@@ -166,6 +166,12 @@ install_neovim() {
 }
 handle_install "Neovim" install_neovim nvim
 
+install_tmux() {
+	$PKG_MGR install tmux
+	git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
+}
+handle_install "tmux" install_tmux tmux
+
 # TODO: Lazygit
 # TODO: grep / fzf
 # TODO: Lua / hererocks / luarocks
