@@ -1,6 +1,8 @@
 #!/bin/bash
 set -euo pipefail
 
+FORCE=${FORCE:-false}
+
 DOTFILES="$HOME/dev-bootstrap/dotfiles"
 
 link() {
