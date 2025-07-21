@@ -174,6 +174,7 @@ install_tmux() {
 handle_install "tmux" install_tmux tmux
 
 install_ghostty() {
+	sudo apt-get install libadwaita-1-0 libgtk-4-1 libharfbuzz0b libonig50
 	curl -fsSL https://raw.githubusercontent.com/mkasberg/ghostty-ubuntu/HEAD/install.sh | bash > >(write_to_log) 2>&1
 }
 handle_install "Ghostty" install_ghostty ghostty
