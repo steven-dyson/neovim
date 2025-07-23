@@ -1,5 +1,7 @@
 #!/bin/bash
 
+source ./helpers.sh
+
 set -euo pipefail
 echo "🛠 Installing language runtimes and tools..."
 
