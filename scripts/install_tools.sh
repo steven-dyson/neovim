@@ -36,10 +36,10 @@ handle_install "PNPM" install_pnpm pnpm
 
 # Neovim
 install_neovim() {
-	$PKG_MGR install unzip -y > >(write_to_log) 2>&1           # need for mason (part of lazyvim)
-	$PKG_MGR install build-essential -y > >(write_to_log) 2>&1 # gcc for lazyvim
+	$PKG_MGR install unzip -y           # need for mason (part of lazyvim)
+	$PKG_MGR install build-essential -y #> >(write_to_log) 2>&1 # gcc for lazyvim
 
-	curl -LO https://github.com/neovim/neovim/releases/latest/download/nvim-linux-x86_64.tar.gz > >(write_to_log) 2>&1
+	curl -LO https://github.com/neovim/neovim/releases/latest/download/nvim-linux-x86_64.tar.gz #> >(write_to_log) 2>&1
 	sudo rm -rf /opt/nvim
 	sudo tar -C /opt -xzf nvim-linux-x86_64.tar.gz
 	sudo mv /opt/nvim-linux-x86_64 /opt/nvim
@@ -49,14 +49,14 @@ handle_install "Neovim" install_neovim nvim
 
 # Tmux and TPM
 install_tmux() {
-	$PKG_MGR install tmux > >(write_to_log) 2>&1
-	git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm > >(write_to_log) 2>&1
+	$PKG_MGR install tmux                                             #> >(write_to_log) 2>&1
+	git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm #> >(write_to_log) 2>&1
 }
 handle_install "tmux" install_tmux tmux
 
 # Ghostty
 install_ghostty() {
-	$PKG_MGR install libgtk-4-dev libadwaita-1-dev git blueprint-compiler gettext libxml2-utils libonig5 -y > >(write_to_log) 2>&1
+	$PKG_MGR install libgtk-4-dev libadwaita-1-dev git blueprint-compiler gettext libxml2-utils libonig5 -y #> >(write_to_log) 2>&1
 	curl -fsSL https://raw.githubusercontent.com/mkasberg/ghostty-ubuntu/HEAD/install.sh | bash > >(write_to_log) 2>&1
 }
 handle_install "Ghostty" install_ghostty ghostty
