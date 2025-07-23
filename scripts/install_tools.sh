@@ -49,7 +49,7 @@ handle_install "Neovim" install_neovim nvim
 
 # Tmux and TPM
 install_tmux() {
-	$PKG_MGR install tmux > >(write_to_log) 2>&1
+	$PKG_MGR install tmux -y > >(write_to_log) 2>&1
 	git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm > >(write_to_log) 2>&1
 
 	tmux start-server
@@ -75,7 +75,7 @@ install_docker() {
 		sudo sh get-docker.sh > >(write_to_log) 2>&1
 
 		# Compose
-		$PKG_MGR install docker-compose-plugin > >(write_to_log) 2>&1
+		$PKG_MGR install docker-compose-plugin -y > >(write_to_log) 2>&1
 
 		# Groups
 		getent group docker >/dev/null || sudo groupadd docker
