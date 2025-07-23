@@ -2,8 +2,6 @@
 
 source "$(dirname "$0")/helpers.sh"
 
-echo "$(dirname "$0")/helpers.sh"
-
 set -euo pipefail
 echo "🛠 Installing language runtimes and tools..."
 

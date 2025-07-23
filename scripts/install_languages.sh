@@ -1,4 +1,4 @@
-source "./helpers.sh"
+source "$(dirname "$0")/helpers.sh"
 
 PKG_MGR=$(get_pkg_mgr)
 
