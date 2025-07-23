@@ -39,7 +39,7 @@ install_neovim() {
 	$PKG_MGR install unzip -y > >(write_to_log) 2>&1           # need for mason (part of lazyvim)
 	$PKG_MGR install build-essential -y > >(write_to_log) 2>&1 # gcc for lazyvim
 
-	curl -LO https://github.com/neovim/neovim/releases/latest/download/nvim-linux-x86_64.tar.gz #> >(write_to_log) 2>&1
+	curl -LO https://github.com/neovim/neovim/releases/latest/download/nvim-linux-x86_64.tar.gz > >(write_to_log) 2>&1
 	sudo rm -rf /opt/nvim
 	sudo tar -C /opt -xzf nvim-linux-x86_64.tar.gz
 	sudo mv /opt/nvim-linux-x86_64 /opt/nvim
@@ -54,7 +54,7 @@ install_tmux() {
 
 	tmux start-server
 	tmux new-session -d
-	"$HOME/.tmux/plugins/tpm/bin/install_plugins"
+	"$HOME/.tmux/plugins/tpm/bin/install_plugins" > >(write_to_log) 2>&1
 	tmux source-file "$HOME/.config/tmux.conf"
 	tmux kill-server
 
