@@ -4,7 +4,8 @@ set -euo pipefail
 FORCE=${FORCE:-false}
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-DOTFILES="$SCRIPT_DIR/dotfiles"
+REPO_ROOT="$(dirname "$SCRIPT_DIR")"
+DOTFILES="$REPO_ROOT/dotfiles"
 
 link() {
 	local src=$1
