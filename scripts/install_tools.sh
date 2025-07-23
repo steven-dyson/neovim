@@ -55,7 +55,7 @@ install_tmux() {
 	tmux start-server
 	tmux new-session -d
 	"$HOME/.tmux/plugins/tpm/bin/install_plugins" > >(write_to_log) 2>&1
-	tmux source-file "$HOME/.config/tmux.conf"
+	tmux source-file "$HOME/.config/tmux/tmux.conf"
 	tmux kill-server
 
 }
