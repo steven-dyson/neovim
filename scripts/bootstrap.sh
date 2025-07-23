@@ -16,10 +16,10 @@ $PKG_MGR update && $PKG_MGR full-upgrade -y
 # Install languages
 ./scripts/install_languages.sh
 
-# Install tools
-./scripts/install_tools.sh
-
 # Link dotfiles
 ./scripts/link-dotfiles.sh
+
+# Install tools
+./scripts/install_tools.sh
 
 echo "✅ Language runtimes and tools installed."
