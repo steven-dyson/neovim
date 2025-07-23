@@ -2,6 +2,8 @@ source "$(dirname "$0")/helpers.sh"
 
 PKG_MGR=$(get_pkg_mgr)
 
+echo "$PKG_MGR"
+
 # Logging
 LOG_DIR="./.logs"
 mkdir -p "$LOG_DIR"
@@ -36,6 +38,7 @@ handle_install "Go" install_go go
 # Python
 # TODO: If python is installed it will skip
 install_python() {
+	echo "Using $PKG_MGR"
 	"$PKG_MGR" install python3 python3-venv
 	set_alias "python" "python3"
 	set_alias "py" "python3"
@@ -43,7 +46,6 @@ install_python() {
 handle_install "Python" install_python python3
 
 # Node and NVM
-
 install_nvm() {
 	if [ -z "${XDG_CONFIG_HOME-}" ]; then
 		export NVM_DIR="${HOME}/.nvm"
