@@ -1,6 +1,8 @@
 #!/bin/bash
 
-source ./helpers.sh
+source "$(dirname "$0")/helpers.sh"
+
+echo "$(dirname "$0")/helpers.sh"
 
 set -euo pipefail
 echo "🛠 Installing language runtimes and tools..."
@@ -14,12 +16,12 @@ $PKG_MGR update && $PKG_MGR full-upgrade -y
 # TODO
 
 # Install languages
-./install_languages.sh
+./scripts/install_languages.sh
 
 # Install tools
-./install_tools.sh
+./scripts/install_tools.sh
 
 # Link dotfiles
-./link-dotfiles.sh
+./scripts/link-dotfiles.sh
 
 echo "✅ Language runtimes and tools installed."
