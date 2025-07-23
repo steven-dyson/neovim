@@ -12,7 +12,7 @@ $PKG_MGR update && $PKG_MGR full-upgrade -y
 
 # Some essentials
 # TODO
-$PKG_MGR install unzip fc-cache
+$PKG_MGR install unzip fontconfig
 wget https://github.com/ryanoasis/nerd-fonts/releases/download/v3.4.0/0xProto.zip
 unzip 0xProto.zip -d 0xProto
 mkdir -p "$HOME/.local/share/fonts"
