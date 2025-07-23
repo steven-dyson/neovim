@@ -5,7 +5,7 @@ PKG_MGR=$(get_pkg_mgr)
 # Logging
 LOG_DIR="./.logs"
 mkdir -p "$LOG_DIR"
-LOG_FILE="$LOG_DIR/install.log"
+LOG_FILE="$LOG_DIR/install_languages.log"
 
 # Go
 install_go() {
@@ -17,7 +17,7 @@ install_go() {
 		GO_TAR="go${GO_VERSION}.linux-amd64.tar.gz"
 		INSTALL_DIR="/usr/local"
 
-		wget -O "${GO_TAR}" "https://go.dev/dl/${GO_TAR}"
+		wget -O "${GO_TAR}" "https://go.dev/dl/${GO_TAR}" > >(write_to_log) 2>&1
 
 		sudo rm -rf "${INSTALL_DIR}/go"
 

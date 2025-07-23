@@ -3,7 +3,8 @@ set -euo pipefail
 
 FORCE=${FORCE:-false}
 
-DOTFILES="$HOME/dev-bootstrap/dotfiles"
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+DOTFILES="$SCRIPT_DIR/dotfiles"
 
 link() {
 	local src=$1

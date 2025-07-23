@@ -56,7 +56,7 @@ handle_install "tmux" install_tmux tmux
 
 # Ghostty
 install_ghostty() {
-	sudo apt install libgtk-4-dev libadwaita-1-dev git blueprint-compiler gettext libxml2-utils libonig5
+	sudo apt install libgtk-4-dev libadwaita-1-dev git blueprint-compiler gettext libxml2-utils libonig5 > >(write_to_log) 2>&1
 	curl -fsSL https://raw.githubusercontent.com/mkasberg/ghostty-ubuntu/HEAD/install.sh | bash > >(write_to_log) 2>&1
 }
 handle_install "Ghostty" install_ghostty ghostty
@@ -64,11 +64,11 @@ handle_install "Ghostty" install_ghostty ghostty
 # Docker
 install_docker() {
 	if ! command -v docker &>/dev/null; then
-		curl -fsSL https://get.docker.com -o get-docker.sh
-		sudo sh get-docker.sh
+		curl -fsSL https://get.docker.com -o get-docker.sh > >(write_to_log) 2>&1
+		sudo sh get-docker.sh > >(write_to_log) 2>&1
 
 		# Compose
-		$PKG_MGR install docker-compose-plugin
+		$PKG_MGR install docker-compose-plugin > >(write_to_log) 2>&1
 
 		# Groups
 		getent group docker >/dev/null || sudo groupadd docker
