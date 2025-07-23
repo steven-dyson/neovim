@@ -58,4 +58,5 @@ handle_install() {
 
 	echo "🟢 Installing $name..."
 	"$fnc"
+	echo "✅ $name ($cmd) installed"
 }

@@ -63,7 +63,7 @@ handle_install "tmux" install_tmux tmux
 
 # Ghostty
 install_ghostty() {
-	$PKG_MGR install libgtk-4-dev libadwaita-1-dev git blueprint-compiler gettext libxml2-utils libonig5 -y #> >(write_to_log) 2>&1
+	$PKG_MGR install libgtk-4-dev libadwaita-1-dev git blueprint-compiler gettext libxml2-utils libonig5 -y > >(write_to_log) 2>&1
 	curl -fsSL https://raw.githubusercontent.com/mkasberg/ghostty-ubuntu/HEAD/install.sh | bash > >(write_to_log) 2>&1
 }
 handle_install "Ghostty" install_ghostty ghostty

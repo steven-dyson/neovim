@@ -26,8 +26,6 @@ install_go() {
 		sudo tar -C "${INSTALL_DIR}" -xzf "${GO_TAR}"
 
 		rm "${GO_TAR}"
-
-		echo "✅ Go ${GO_VERSION} installed to ${INSTALL_DIR}/go"
 	fi
 
 	set_path "/usr/local/go/bin"
@@ -38,7 +36,6 @@ handle_install "Go" install_go go
 # Python
 # TODO: If python is installed it will skip
 install_python() {
-	echo "Using $PKG_MGR"
 	eval "$PKG_MGR" install python3 python3-venv -y > >(write_to_log) 2>&1
 	set_alias "python" "python3"
 	set_alias "py" "python3"
