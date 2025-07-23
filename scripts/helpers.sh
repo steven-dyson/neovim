@@ -56,15 +56,11 @@ handle_install() {
 	local fnc=$2
 	local cmd=$3
 
-	if ! command -v "$cmd" &>/dev/null; then
-		read -rp "🤔 Do you want to install $name? (y/N) " answer
-		if [[ "${answer,,}" == "y" ]]; then
-			echo "🟢 Installing $name..."
-			"$fnc"
-		else
-			echo "❌ Skipping installation of $name"
-		fi
+	read -rp "🤔 Do you want to install $name? (y/N) " answer
+	if [[ "${answer,,}" == "y" ]]; then
+		echo "🟢 Installing $name..."
+		"$fnc"
 	else
-		echo "📦 $name is already installed"
+		echo "❌ Skipping installation of $name"
 	fi
 }
