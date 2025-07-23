@@ -39,7 +39,7 @@ handle_install "Go" install_go go
 # TODO: If python is installed it will skip
 install_python() {
 	echo "Using $PKG_MGR"
-	"$PKG_MGR" install python3 python3-venv
+	eval "$PKG_MGR" install python3 python3-venv
 	set_alias "python" "python3"
 	set_alias "py" "python3"
 }
