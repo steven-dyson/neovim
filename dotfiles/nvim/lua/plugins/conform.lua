@@ -25,6 +25,14 @@ return {
             return #diag > 0
           end,
         },
+        templ_tool = {
+          command = "go",
+          args = { "tool", "templ", "fmt", "$FILENAME" },
+          stdin = false,
+          condition = function(_, ctx)
+            return vim.bo[ctx.buf].filetype == "templ" or ctx.filename:match("%.templ$")
+          end,
+        },
       },
       formatters_by_ft = {
         lua = { "stylua" },
@@ -49,6 +57,7 @@ return {
         sh = { "shfmt" },
         bash = { "shfmt" },
         sql = { "sqruff" },
+        templ = { "templ_tool" },
       },
     }),
   },
