@@ -9,25 +9,25 @@ return {
     end,
     keys = {
       {
-        "<leader>Cc",
+        "<leader>tct",
         function()
           require("coverage").toggle()
         end,
-        desc = "Toggle coverage",
+        desc = "Test coverage toggle",
       },
       {
-        "<leader>Co",
+        "<leader>tcs",
         function()
           require("coverage").summary()
         end,
-        desc = "Open coverage window",
+        desc = "Test coverage summary",
       },
       {
-        "<leader>Cr",
+        "<leader>tcr",
         function()
           require("coverage").load(true)
         end,
-        desc = "Reload coverage",
+        desc = "Test coverage reload",
       },
     },
   },
