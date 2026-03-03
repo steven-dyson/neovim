@@ -21,5 +21,35 @@ return {
         },
       },
     })
+
+    -- Disable sqruff LSP auto-attachment
+    opts.servers.sqruff = { enabled = false }
+
+    -- Manual config for postgres-language-server
+    local lspconfig = require("lspconfig")
+    lspconfig.postgres_language_server = {
+      default_config = {
+        cmd = { "postgres-language-server", "--stdio" },
+        filetypes = { "sql", "pgsql", "plpgsql" },
+        root_dir = lspconfig.util.root_pattern(
+          ".git",
+          "docker-compose.yml",
+          "docker-compose.yaml",
+          "Makefile",
+          ".sqlfluff",
+          "pyproject.toml"
+        ) or vim.fs.dirname, -- ← fixed deprecation here
+        single_file_support = true,
+        settings = {},
+      },
+    }
+
+    -- Optional: Auto-start on SQL filetypes (if not attaching automatically)
+    vim.api.nvim_create_autocmd("FileType", {
+      pattern = { "sql", "pgsql", "plpgsql" },
+      callback = function()
+        vim.lsp.start("postgres_language_server")
+      end,
+    })
   end,
 }
