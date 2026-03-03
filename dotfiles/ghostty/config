@@ -44,3 +44,6 @@
 
 theme=catppuccin-mocha
 font-family=0xProto Nerd Font Mono
+
+# Always save and restore state (overrides macOS default which only saves on crash)
+window-save-state = always
