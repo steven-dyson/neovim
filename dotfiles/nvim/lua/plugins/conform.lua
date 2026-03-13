@@ -7,8 +7,8 @@ return {
     local function has_sqlfluff_config()
       return util.root_file({
         ".sqlfluff",
-        "pyproject.toml", -- often has [tool.sqlfluff]
-        "setup.cfg", -- less common but possible
+        "pyproject.toml",
+        "setup.cfg",
       }) ~= nil
     end
 
@@ -43,8 +43,16 @@ return {
         args = { "format", "--dialect", "postgres", "-" },
       },
       ["sqruff"] = {
-        -- sqruff CLI: 'fmt' for formatting, supports stdin with -
         args = { "fmt", "--dialect", "postgres", "-" },
+      },
+      ["prettier"] = {
+        condition = function(_, ctx)
+          local filename = ctx.filename or vim.fn.expand("%:t")
+          if filename:match("_temp%.json$") or filename == "unnamed_temp.json" then
+            return false
+          end
+          return true
+        end,
       },
     })
 
@@ -79,8 +87,5 @@ return {
       end,
       templ = { "templ_tool" },
     })
-
-    -- Optional: If you want debug info about why it chose one
-    -- opts.log_level = vim.log.levels.DEBUG
   end,
 }
