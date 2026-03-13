@@ -14,7 +14,7 @@ return {
     })
 
     opts.servers.tailwindcss = vim.tbl_deep_extend("force", opts.servers.tailwindcss or {}, {
-      filetypes = { "html", "css", "javascript", "javascriptreact", "typescript", "typescriptreact", "templ" },
+      filetypes = { "html", "css", "javascript", "javascriptreact", "typescript", "typescriptreact", "templ", "astro" },
       init_options = {
         userLanguages = {
           templ = "html",
