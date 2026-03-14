@@ -31,6 +31,7 @@ return {
       },
     },
   },
+
   -- Neotest setup
   {
     "nvim-neotest/neotest",
@@ -40,10 +41,8 @@ return {
       "nvim-lua/plenary.nvim",
       "antoinemadec/FixCursorHold.nvim",
       { "nvim-treesitter/nvim-treesitter", branch = "main" },
-
       "nvim-neotest/neotest-plenary",
       "nvim-neotest/neotest-vim-test",
-
       {
         "fredrikaverpil/neotest-golang",
         version = "*",
@@ -68,6 +67,7 @@ return {
           },
         }),
       }
+      return opts
     end,
     config = function(_, opts)
       if opts.adapters then
@@ -189,10 +189,32 @@ return {
     },
   },
 
-  -- DAP setup
+  -- DAP core
   {
     "mfussenegger/nvim-dap",
     event = "VeryLazy",
+    config = function()
+      local dap = require("dap")
+
+      -- Restore nice breakpoint icons (replaces plain "B")
+      vim.fn.sign_define("DapBreakpoint", { text = " ", texthl = "DiagnosticInfo", linehl = "", numhl = "" })
+      vim.fn.sign_define(
+        "DapBreakpointCondition",
+        { text = " ", texthl = "DiagnosticInfo", linehl = "", numhl = "" }
+      )
+      vim.fn.sign_define(
+        "DapBreakpointRejected",
+        { text = " ", texthl = "DiagnosticError", linehl = "", numhl = "" }
+      )
+      vim.fn.sign_define("DapLogPoint", { text = " ", texthl = "DiagnosticHint", linehl = "", numhl = "" })
+      vim.fn.sign_define(
+        "DapStopped",
+        { text = "󰁕 ", texthl = "DiagnosticWarn", linehl = "DapStoppedLine", numhl = "" }
+      )
+
+      -- Optional: subtle highlight for current line when paused
+      vim.api.nvim_set_hl(0, "DapStoppedLine", { link = "CursorLine" })
+    end,
     keys = {
       {
         "<leader>db",
@@ -311,55 +333,39 @@ return {
         function()
           require("dap.ui.widgets").hover()
         end,
-        desc = "[d]ebug [w]idgets",
+        desc = "[d]ebug [w]idgets hover",
       },
+
+      -- dap-view specific bindings
+      { "<leader>dv", "<cmd>DapViewOpen<cr>", desc = "Open [d]ebug [v]iew" },
+      { "<leader>dq", "<cmd>DapViewClose<cr>", desc = "[d]ebug [q]uit view" },
     },
   },
 
-  -- DAP UI setup
+  -- DAP View (UI replacement for dap-ui)
   {
-    "rcarriga/nvim-dap-ui",
-    event = "VeryLazy",
-    dependencies = {
-      "nvim-neotest/nvim-nio",
-      "mfussenegger/nvim-dap",
-    },
-    opts = {},
-    config = function(_, opts)
-      -- setup dap config by VsCode launch.json file
-      -- require("dap.ext.vscode").load_launchjs()
-      local dap = require("dap")
-      local dapui = require("dapui")
-      dapui.setup(opts)
-      dap.listeners.after.event_initialized["dapui_config"] = function()
-        dapui.open({})
-      end
-      dap.listeners.before.event_terminated["dapui_config"] = function()
-        dapui.close({})
-      end
-      dap.listeners.before.event_exited["dapui_config"] = function()
-        dapui.close({})
-      end
-    end,
-    keys = {
-      {
-        "<leader>du",
-        function()
-          require("dapui").toggle({})
-        end,
-        desc = "[d]ap [u]i",
+    "igorlfs/nvim-dap-view",
+    lazy = false, -- usually fine to eager-load since it's lightweight
+    opts = {
+      windows = {
+        position = "right", -- "bottom" (default), "top", "left", or "right"
+        size = 0.3, -- fraction of total width/height (e.g., 30% width when on right/left)
+        -- or size = 50 for fixed columns (e.g., 50 chars wide)
       },
-      {
-        "<leader>de",
-        function()
-          require("dapui").eval()
-        end,
-        desc = "[d]ap [e]val",
-      },
+      -- You can add custom opts here later, e.g.:
+      -- auto_open = true,
+      -- sections = { ... },
     },
   },
+
+  -- Virtual text (shows variable values inline)
   {
     "theHamsta/nvim-dap-virtual-text",
-    opts = {},
+    opts = {
+      enabled = true,
+      highlight_changed_variables = true,
+      highlight_new_as_changed = true,
+      -- virt_text_pos = "inline",  -- nicer in Neovim ≥0.10
+    },
   },
 }
