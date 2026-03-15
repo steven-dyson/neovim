@@ -75,7 +75,7 @@ return {
       markdown = { "prettier", "markdownlint-cli2", "markdown-toc" },
       ["markdown.mdx"] = { "markdownlint-cli2", "markdown-toc" },
       toml = { "taplo" },
-      go = { "gofumpt" },
+      go = { "gofumpt", "goimports" },
       sh = { "shfmt" },
       bash = { "shfmt" },
       sql = function(bufnr)
