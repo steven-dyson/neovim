@@ -4,6 +4,7 @@ return {
   opts = {
     linters_by_ft = {
       markdown = { "markdownlint-cli2" },
+      go = { "golangcilint" },
     },
   },
 }
