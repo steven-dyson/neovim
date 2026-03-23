@@ -5,6 +5,11 @@ return {
     config = function()
       require("coverage").setup({
         auto_reload = true,
+        lang = {
+          go = {
+            coverage_file = "coverage.out", -- relative path – works better here
+          },
+        },
       })
     end,
     keys = {
@@ -47,58 +52,31 @@ return {
         "fredrikaverpil/neotest-golang",
         version = "*",
         dependencies = {
-          {
-            "leoluz/nvim-dap-go",
-            opts = {},
-          },
+          { "leoluz/nvim-dap-go", opts = {} },
         },
       },
     },
-    opts = function(_, opts)
-      opts.adapters = opts.adapters or {}
-      opts.adapters = {
-        require("neotest-golang")({
-          go_test_args = {
-            "-v",
-            "-coverprofile=" .. vim.fn.getcwd() .. "/coverage.out",
-          },
-          env = {
-            CGO_ENABLED = "1",
-          },
-        }),
+    opts = function()
+      return {
+        adapters = {
+          require("neotest-golang")({
+            go_test_args = {
+              "-v",
+              "-race",
+              "-coverprofile=coverage.out", -- relative path – usually fixes cwd issues
+              -- "-covermode=atomic",                -- uncomment if you get weird coverage with -race
+              -- "-coverpkg=./...",                  -- uncomment for full module coverage
+            },
+            env = {
+              CGO_ENABLED = "1",
+            },
+          }),
+        },
+        status = { virtual_text = true },
+        output = { open_on_run = true },
       }
-      return opts
     end,
     config = function(_, opts)
-      if opts.adapters then
-        local adapters = {}
-        for name, config in pairs(opts.adapters or {}) do
-          if type(name) == "number" then
-            if type(config) == "string" then
-              config = require(config)
-            end
-            adapters[#adapters + 1] = config
-          elseif config ~= false then
-            local adapter = require(name)
-            if type(config) == "table" and not vim.tbl_isempty(config) then
-              local meta = getmetatable(adapter)
-              if adapter.setup then
-                adapter.setup(config)
-              elseif adapter.adapter then
-                adapter.adapter(config)
-                adapter = adapter.adapter
-              elseif meta and meta.__call then
-                adapter(config)
-              else
-                error("Adapter " .. name .. " does not support setup")
-              end
-            end
-            adapters[#adapters + 1] = adapter
-          end
-        end
-        opts.adapters = adapters
-      end
-
       require("neotest").setup(opts)
     end,
     keys = {
@@ -119,7 +97,11 @@ return {
       {
         "<leader>tA",
         function()
-          require("neotest").run.run(vim.uv.cwd())
+          -- Now uses the default go_test_args → coverage.out should be created
+          require("neotest").run.run({
+            suite = true,
+            dir = vim.uv.cwd(),
+          })
         end,
         desc = "[t]est [A]ll files",
       },
@@ -195,8 +177,6 @@ return {
     event = "VeryLazy",
     config = function()
       local dap = require("dap")
-
-      -- Restore nice breakpoint icons (replaces plain "B")
       vim.fn.sign_define("DapBreakpoint", { text = " ", texthl = "DiagnosticInfo", linehl = "", numhl = "" })
       vim.fn.sign_define(
         "DapBreakpointCondition",
@@ -211,8 +191,6 @@ return {
         "DapStopped",
         { text = "󰁕 ", texthl = "DiagnosticWarn", linehl = "DapStoppedLine", numhl = "" }
       )
-
-      -- Optional: subtle highlight for current line when paused
       vim.api.nvim_set_hl(0, "DapStoppedLine", { link = "CursorLine" })
     end,
     keys = {
@@ -335,8 +313,6 @@ return {
         end,
         desc = "[d]ebug [w]idgets hover",
       },
-
-      -- dap-view specific bindings
       { "<leader>dv", "<cmd>DapViewOpen<cr>", desc = "Open [d]ebug [v]iew" },
       { "<leader>dq", "<cmd>DapViewClose<cr>", desc = "[d]ebug [q]uit view" },
     },
@@ -345,16 +321,12 @@ return {
   -- DAP View (UI replacement for dap-ui)
   {
     "igorlfs/nvim-dap-view",
-    lazy = false, -- usually fine to eager-load since it's lightweight
+    lazy = false,
     opts = {
       windows = {
-        position = "right", -- "bottom" (default), "top", "left", or "right"
-        size = 0.3, -- fraction of total width/height (e.g., 30% width when on right/left)
-        -- or size = 50 for fixed columns (e.g., 50 chars wide)
+        position = "right",
+        size = 0.3,
       },
-      -- You can add custom opts here later, e.g.:
-      -- auto_open = true,
-      -- sections = { ... },
     },
   },
 
@@ -365,7 +337,6 @@ return {
       enabled = true,
       highlight_changed_variables = true,
       highlight_new_as_changed = true,
-      -- virt_text_pos = "inline",  -- nicer in Neovim ≥0.10
     },
   },
 }
