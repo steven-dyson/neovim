@@ -9,6 +9,10 @@ return {
           go = {
             coverage_file = "coverage.out", -- relative path – works better here
           },
+          python = {
+            coverage_file = ".coverage",
+            coverage_command = "coverage json --fail-under=0 -q -o -",
+          },
         },
       })
     end,
@@ -49,6 +53,24 @@ return {
       "nvim-neotest/neotest-plenary",
       "nvim-neotest/neotest-vim-test",
       {
+        "nvim-neotest/neotest-python",
+        dependencies = {
+          {
+            "mfussenegger/nvim-dap-python",
+            config = function()
+              local dap_python = require("dap-python")
+              -- Use virtual environment's python for debugging
+              local venv = vim.env.VIRTUAL_ENV
+              if venv then
+                dap_python.setup(venv .. "/bin/python")
+              else
+                dap_python.setup(vim.fn.exepath("python3") or "python")
+              end
+            end,
+          },
+        },
+      },
+      {
         "fredrikaverpil/neotest-golang",
         version = "*",
         dependencies = {
@@ -70,6 +92,19 @@ return {
             env = {
               CGO_ENABLED = "1",
             },
+          }),
+          require("neotest-python")({
+            dap = { justMyCode = false },
+            args = { "--log-level", "DEBUG", "--quiet", "--cov" },
+            runner = "pytest",
+            python = function()
+              -- Integrate with venv-selector
+              local venv = vim.env.VIRTUAL_ENV
+              if venv then
+                return venv .. "/bin/python"
+              end
+              return vim.fn.exepath("python3") or "python"
+            end,
           }),
         },
         status = { virtual_text = true },
@@ -102,6 +137,7 @@ return {
             suite = true,
             dir = vim.uv.cwd(),
           })
+          require("coverage").load(true)
         end,
         desc = "[t]est [A]ll files",
       },
