@@ -45,15 +45,6 @@ return {
       ["sqruff"] = {
         args = { "fmt", "--dialect", "postgres", "-" },
       },
-      ["prettier"] = {
-        condition = function(_, ctx)
-          local filename = ctx.filename or vim.fn.expand("%:t")
-          if filename:match("_temp%.json$") or filename == "unnamed_temp.json" then
-            return false
-          end
-          return true
-        end,
-      },
     })
 
     opts.formatters_by_ft = vim.tbl_deep_extend("force", opts.formatters_by_ft or {}, {
