@@ -22,25 +22,24 @@ return {
         function()
           require("coverage").toggle()
         end,
-        desc = "Test coverage toggle",
+        desc = "Test Coverage Toggle",
       },
       {
         "<leader>tcs",
         function()
           require("coverage").summary()
         end,
-        desc = "Test coverage summary",
+        desc = "Test Coverage Summary",
       },
       {
         "<leader>tcr",
         function()
           require("coverage").load(true)
         end,
-        desc = "Test coverage reload",
+        desc = "Test Coverage Reload",
       },
     },
   },
-
   -- Neotest setup
   {
     "nvim-neotest/neotest",
@@ -84,13 +83,8 @@ return {
           require("neotest-golang")({
             go_test_args = {
               "-v",
-              "-race",
-              "-coverprofile=coverage.out", -- relative path – usually fixes cwd issues
-              -- "-covermode=atomic",                -- uncomment if you get weird coverage with -race
-              -- "-coverpkg=./...",                  -- uncomment for full module coverage
-            },
-            env = {
-              CGO_ENABLED = "1",
+              "-count=1", -- prevent test caching
+              "-coverprofile=coverage.out",
             },
           }),
           require("neotest-python")({
@@ -120,14 +114,14 @@ return {
         function()
           require("neotest").run.attach()
         end,
-        desc = "[t]est [a]ttach",
+        desc = "Test Attach",
       },
       {
         "<leader>tf",
         function()
           require("neotest").run.run(vim.fn.expand("%"))
         end,
-        desc = "[t]est run [f]ile",
+        desc = "Test Run File",
       },
       {
         "<leader>tA",
@@ -139,70 +133,70 @@ return {
           })
           require("coverage").load(true)
         end,
-        desc = "[t]est [A]ll files",
+        desc = "Test All Files (with coverage)",
       },
       {
         "<leader>tS",
         function()
           require("neotest").run.run({ suite = true })
         end,
-        desc = "[t]est [S]uite",
+        desc = "Test Suite",
       },
       {
         "<leader>tn",
         function()
           require("neotest").run.run()
         end,
-        desc = "[t]est [n]earest",
+        desc = "Test Nearest",
       },
       {
         "<leader>tl",
         function()
           require("neotest").run.run_last()
         end,
-        desc = "[t]est [l]ast",
+        desc = "Test Last",
       },
       {
         "<leader>ts",
         function()
           require("neotest").summary.toggle()
         end,
-        desc = "[t]est [s]ummary",
+        desc = "Test Summary",
       },
       {
         "<leader>to",
         function()
           require("neotest").output.open({ enter = true, auto_close = true })
         end,
-        desc = "[t]est [o]utput",
+        desc = "Test Output",
       },
       {
         "<leader>tO",
         function()
           require("neotest").output_panel.toggle()
         end,
-        desc = "[t]est [O]utput panel",
+        desc = "Test Output Panel",
       },
       {
         "<leader>tt",
         function()
           require("neotest").run.stop()
         end,
-        desc = "[t]est [t]erminate",
+        desc = "Test Terminate",
       },
       {
         "<leader>td",
         function()
           require("neotest").run.run({ suite = false, strategy = "dap" })
         end,
-        desc = "Debug nearest test",
+        desc = "Debug Nearest Test",
       },
       {
         "<leader>tD",
         function()
-          require("neotest").run.run({ vim.fn.expand("%"), strategy = "dap" })
+          require("neotest").run.run({ suite = false, vim.fn.expand("%"), strategy = "dap" })
         end,
-        desc = "Debug current file",
+        desc = "Debug Current File",
       },
     },
   },
@@ -235,122 +229,122 @@ return {
         function()
           require("dap").toggle_breakpoint()
         end,
-        desc = "toggle [d]ebug [b]reakpoint",
+        desc = "Toggle Debug Breakpoint",
       },
       {
         "<leader>dB",
         function()
           require("dap").set_breakpoint(vim.fn.input("Breakpoint condition: "))
         end,
-        desc = "[d]ebug [B]reakpoint",
+        desc = "Debug Breakpoint Condition",
       },
       {
         "<leader>dc",
         function()
           require("dap").continue()
         end,
-        desc = "[d]ebug [c]ontinue (start here)",
+        desc = "Debug Continue",
       },
       {
         "<leader>dC",
         function()
           require("dap").run_to_cursor()
         end,
-        desc = "[d]ebug [C]ursor",
+        desc = "Debug Run To Cursor",
       },
       {
         "<leader>dg",
         function()
           require("dap").goto_()
         end,
-        desc = "[d]ebug [g]o to line",
+        desc = "Debug Go To Line",
       },
       {
         "<leader>do",
         function()
           require("dap").step_over()
         end,
-        desc = "[d]ebug step [o]ver",
+        desc = "Debug Step Over",
       },
       {
         "<leader>dO",
         function()
           require("dap").step_out()
         end,
-        desc = "[d]ebug step [O]ut",
+        desc = "Debug Step Out",
       },
       {
         "<leader>di",
         function()
           require("dap").step_into()
         end,
-        desc = "[d]ebug [i]nto",
+        desc = "Debug Step Into",
       },
       {
         "<leader>dj",
         function()
           require("dap").down()
         end,
-        desc = "[d]ebug [j]ump down",
+        desc = "Debug Jump Down",
       },
       {
         "<leader>dk",
         function()
           require("dap").up()
         end,
-        desc = "[d]ebug [k]ump up",
+        desc = "Debug Jump Up",
       },
       {
         "<leader>dl",
         function()
           require("dap").run_last()
         end,
-        desc = "[d]ebug [l]ast",
+        desc = "Debug Last",
       },
       {
         "<leader>dp",
         function()
           require("dap").pause()
         end,
-        desc = "[d]ebug [p]ause",
+        desc = "Debug Pause",
       },
       {
         "<leader>dr",
         function()
           require("dap").repl.toggle()
         end,
-        desc = "[d]ebug [r]epl",
+        desc = "Debug Repl",
       },
       {
         "<leader>dR",
         function()
           require("dap").clear_breakpoints()
         end,
-        desc = "[d]ebug [R]emove breakpoints",
+        desc = "Debug Remove Breakpoints",
       },
       {
         "<leader>ds",
         function()
           require("dap").session()
         end,
-        desc = "[d]ebug [s]ession",
+        desc = "Debug Session",
       },
       {
         "<leader>dt",
         function()
           require("dap").terminate()
         end,
-        desc = "[d]ebug [t]erminate",
+        desc = "Debug Terminate",
       },
       {
         "<leader>dw",
         function()
           require("dap.ui.widgets").hover()
         end,
-        desc = "[d]ebug [w]idgets hover",
+        desc = "Debug Widgets Hover",
       },
-      { "<leader>dv", "<cmd>DapViewOpen<cr>", desc = "Open [d]ebug [v]iew" },
-      { "<leader>dq", "<cmd>DapViewClose<cr>", desc = "[d]ebug [q]uit view" },
+      { "<leader>dv", "<cmd>DapViewOpen<cr>", desc = "Open Debug View" },
+      { "<leader>dq", "<cmd>DapViewClose<cr>", desc = "Debug Quit View" },
     },
   },
 
