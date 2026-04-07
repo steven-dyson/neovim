@@ -25,6 +25,15 @@ return {
     -- Disable sqruff LSP auto-attachment
     opts.servers.sqruff = { enabled = false }
 
+    -- Configure gopls with build tags
+    opts.servers.gopls = vim.tbl_deep_extend("force", opts.servers.gopls or {}, {
+      settings = {
+        gopls = {
+          buildFlags = { "-tags=integration" },
+        },
+      },
+    })
+
     -- Manual config for postgres-language-server
     local lspconfig = require("lspconfig")
     lspconfig.postgres_language_server = {
