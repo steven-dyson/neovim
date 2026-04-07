@@ -3,13 +3,32 @@ return {
 
   opts = {
     -- Any ACP-compatible provider works. Built-in: "claude-agent-acp" | "gemini-acp" | "codex-acp" | "opencode-acp" | "cursor-acp" | "copilot-acp" | "auggie-acp" | "mistral-vibe-acp" | "cline-acp" | "goose-acp"
-    provider = "opencode-acp", -- setting the name here is all you need to get started
+    provider = "codex-acp", -- setting the name here is all you need to get started
     acp_providers = {
-
-      -- optional personal setup
+      ["codex-acp"] = {
+        command = "codex-acp",
+        args = {
+          "-c",
+          'model_reasoning_effort="medium"',
+          "-c",
+          'model_verbosity="low"',
+          "-c",
+          'personality="pragmatic"',
+          "-c",
+          'approval_policy="on-request"',
+          "-c",
+          'sandbox_mode="workspace-write"',
+          "-c",
+          'plan_mode_reasoning_effort="high"',
+          "-c",
+          'service_tier="fast"',
+          "-c",
+          'web_search="live"',
+        },
+      },
       ["opencode-acp"] = {
         command = "opencode",
-        args = { "--acp" },
+        args = { "acp" },
       },
     },
   },

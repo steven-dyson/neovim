@@ -1,4 +1,6 @@
 -- Make local LuaRocks (Lua 5.1) visible to Neovim BEFORE loading plugins
+vim.env.PATH = "/usr/local/bin:" .. vim.env.PATH
+
 local home = (vim and vim.loop and vim.loop.os_homedir()) or os.getenv("HOME")
 package.path = table.concat({
   package.path,

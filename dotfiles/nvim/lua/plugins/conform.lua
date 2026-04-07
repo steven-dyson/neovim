@@ -1,17 +1,6 @@
 return {
   "stevearc/conform.nvim",
   opts = function(_, opts)
-    local util = require("conform.util")
-
-    -- Helper to detect sqlfluff config in project root
-    local function has_sqlfluff_config()
-      return util.root_file({
-        ".sqlfluff",
-        "pyproject.toml",
-        "setup.cfg",
-      }) ~= nil
-    end
-
     opts.formatters = vim.tbl_deep_extend("force", opts.formatters or {}, {
       ["markdown-toc"] = {
         condition = function(_, ctx)
@@ -41,9 +30,7 @@ return {
       },
       ["sqlfluff"] = {
         args = { "format", "--dialect", "postgres", "-" },
-      },
-      ["sqruff"] = {
-        args = { "fmt", "--dialect", "postgres", "-" },
+        require_cwd = false,
       },
     })
 
@@ -69,13 +56,7 @@ return {
       go = { "gofumpt", "goimports" },
       sh = { "shfmt" },
       bash = { "shfmt" },
-      sql = function(bufnr)
-        if has_sqlfluff_config() then
-          return { "sqlfluff" }
-        else
-          return { "sqruff" }
-        end
-      end,
+      sql = { "sqlfluff" },
       templ = { "templ_tool" },
     })
   end,
