@@ -7,11 +7,15 @@ return {
         auto_reload = true,
         lang = {
           go = {
-            coverage_file = "coverage.out", -- relative path – works better here
+            coverage_file = "coverage.out",
           },
           python = {
             coverage_file = ".coverage",
             coverage_command = "coverage json --fail-under=0 -q -o -",
+          },
+          vitest = {
+            coverage_file = "coverage/lcov.info",
+            coverage_command = "vitest run --coverage",
           },
         },
       })
@@ -51,6 +55,7 @@ return {
       { "nvim-treesitter/nvim-treesitter", branch = "main" },
       "nvim-neotest/neotest-plenary",
       "nvim-neotest/neotest-vim-test",
+      "marilari88/neotest-vitest",
       {
         "nvim-neotest/neotest-python",
         dependencies = {
@@ -78,15 +83,28 @@ return {
       },
     },
     opts = function()
+      local golang_adapter = require("neotest-golang")({
+        go_test_args = {
+          "-v",
+          "-count=1", -- prevent test caching
+          "-coverprofile=coverage.out",
+        },
+      })
+
+      golang_adapter.root = function(dir)
+        local go_root = vim.fs.find({ "go.work", "go.mod" }, {
+          path = dir,
+          upward = false,
+        })[1]
+        if not go_root then
+          return nil
+        end
+        return vim.fs.dirname(go_root)
+      end
+
       return {
         adapters = {
-          require("neotest-golang")({
-            go_test_args = {
-              "-v",
-              "-count=1", -- prevent test caching
-              "-coverprofile=coverage.out",
-            },
-          }),
+          golang_adapter,
           require("neotest-python")({
             dap = { justMyCode = false },
             args = { "--log-level", "DEBUG", "--quiet", "--cov" },
@@ -99,6 +117,9 @@ return {
               end
               return vim.fn.exepath("python3") or "python"
             end,
+          }),
+          require("neotest-vitest")({
+            args = { "--coverage" },
           }),
         },
         status = { virtual_text = true },
